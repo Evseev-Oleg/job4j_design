@@ -24,7 +24,7 @@ public class EvenIterator implements Iterator<Integer> {
 
     @Override
     public Integer next() {
-        if (!hasNext() && point < data.length) {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
         return data[point++];
