@@ -10,12 +10,6 @@ public class FlatMap<T> implements Iterator<T> {
         this.data = data;
     }
 
-    private void cursorInit() {
-        while (!cursor.hasNext() && data.hasNext()) {
-            cursor = data.next();
-        }
-    }
-
     @Override
     public boolean hasNext() {
         while (!cursor.hasNext() && data.hasNext()) {

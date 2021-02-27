@@ -64,15 +64,16 @@ public class FlatMapTest {
         flat.next();
     }
 
-//    @Test
-//    public void whenSeveralEmptyAndNotEmpty() {
-//        Iterator<Iterator<?>> it = List.of(
-//                Collections.emptyIterator(),
-//                Collections.emptyIterator(),
-//                Collections.emptyIterator(),
-//                List.of(1).iterator()
-//        ).iterator();
-//        assertTrue(it.hasNext());
-//        assertThat(1, is(it.next()));
-//    }
+    @Test
+    public void whenSeveralEmptyAndNotEmpty() {
+        Iterator<Iterator<Integer>> it = List.of(
+                Collections.<Integer>emptyIterator(),
+                Collections.<Integer>emptyIterator(),
+                Collections.<Integer>emptyIterator(),
+                List.of(1).iterator()
+        ).iterator();
+        FlatMap<Integer> flat = new FlatMap<>(it);
+        assertTrue(it.hasNext());
+        assertThat(1, is(flat.next()));
+    }
 }
