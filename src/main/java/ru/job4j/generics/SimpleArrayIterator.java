@@ -10,8 +10,7 @@ public class SimpleArrayIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return point < simpleArray.getArr().length
-                && Objects.nonNull(simpleArray.getArr()[point]);
+        return point < simpleArray.getArr().length;
     }
 
     @Override
