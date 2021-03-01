@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class SimpleArray<T> implements Iterable<T> {
     private final T[] arr;
+    private int size = 0;
 
     public SimpleArray(T[] arr) {
         this.arr = arr;
@@ -16,27 +17,27 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     void add(T model) {
-        for (int i = 0; i < arr.length; i++) {
-            if (!Objects.nonNull(arr[i])) {
-                arr[i] = model;
-                break;
-            }
-        }
+        arr[size++] = model;
     }
 
     void set(int index, T model) {
-        Objects.checkIndex(index, arr.length);
+        Objects.checkIndex(index, size);
         arr[index] = model;
     }
 
     void remove(int index) {
-        Objects.checkIndex(index, arr.length);
+        Objects.checkIndex(index, size);
         System.arraycopy(arr, index + 1, arr, index, arr.length - index - 1);
+        size--;
     }
 
     T get(int index) {
-        Objects.checkIndex(index, arr.length);
+        Objects.checkIndex(index, size);
         return arr[index];
+    }
+
+    public int getSize() {
+        return size;
     }
 
     @Override
