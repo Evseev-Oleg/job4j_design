@@ -8,7 +8,7 @@ public class SimpleArray<T> implements Iterable<T> {
     private int count = 0;
 
     public T get(int index) {
-        Objects.checkIndex(index, modCount);
+        Objects.checkIndex(index, count);
         return (T) container[index];
     }
 
@@ -23,11 +23,12 @@ public class SimpleArray<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            private int expectedModCount = 0;
+            private int expectedModCount = modCount;
+            private int point = 0;
 
             @Override
             public boolean hasNext() {
-                return expectedModCount < modCount;
+                return point < count;
             }
 
             @Override
@@ -35,11 +36,21 @@ public class SimpleArray<T> implements Iterable<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                if (++expectedModCount != modCount) {
+                if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return container[expectedModCount - 1];
+                return container[point++];
             }
         };
+    }
+
+    public static void main(String[] args) {
+        SimpleArray<String> simpleArray = new SimpleArray<>();
+        simpleArray.add("a");
+        simpleArray.add("b");
+        simpleArray.add("c");
+        for (int i = 1; i < simpleArray.count; i++) {
+            System.out.println(simpleArray.get(i));
+        }
     }
 }
