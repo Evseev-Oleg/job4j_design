@@ -13,8 +13,6 @@ public class SimpleLinkedList<E> implements Iterable<E> {
     public void add(E value) {
         Node<E> node = new Node<>(value);
         if (nodeHead == null) {
-            node.next = null;
-            node.prev = null;
             nodeHead = node;
         } else {
             nodeTail.next = node;
@@ -62,9 +60,6 @@ public class SimpleLinkedList<E> implements Iterable<E> {
                 }
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
-                }
-                for (int i = 0; i <= point; i++) {
-                    result = result.next;
                 }
                 point++;
                 return result.data;
