@@ -1,5 +1,6 @@
 package ru.job4j.collection;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -43,5 +44,18 @@ public class ForwardLinkTest {
         assertThat(it.next(), is(2));
         assertThat(it.next(), is(1));
 
+    }
+
+    @Test
+    public void whenSize0ThenReturnFalse() {
+        ForwardLink<Integer> emptyList = new ForwardLink<>();
+        assertFalse(emptyList.revert());
+    }
+
+    @Test
+    public void whenSize1ThenReturnFalse() {
+        ForwardLink<Integer> singleList = new ForwardLink<>();
+        singleList.add(1);
+        assertFalse(singleList.revert());
     }
 }
