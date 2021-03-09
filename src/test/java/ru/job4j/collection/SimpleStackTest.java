@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
+
 public class SimpleStackTest {
     @Test
     public void whenPushThenPoll() {
@@ -29,5 +31,11 @@ public class SimpleStackTest {
         stack.push(2);
         stack.pop();
         assertThat(stack.pop(), is(1));
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void whenPushPushThenIsEmpty() {
+        SimpleStack<Integer> stack = new SimpleStack<>();
+        stack.pop();
     }
 }
