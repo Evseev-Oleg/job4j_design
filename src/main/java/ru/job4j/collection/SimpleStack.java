@@ -11,4 +11,7 @@ public class SimpleStack<T> {
         linked.addFirst(value);
     }
 
+    public ForwardLinked<T> getLinked() {
+        return linked;
+    }
 }
