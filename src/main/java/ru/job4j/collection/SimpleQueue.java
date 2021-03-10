@@ -1,37 +1,20 @@
 package ru.job4j.collection;
 
-import java.util.NoSuchElementException;
-
 public class SimpleQueue<T> {
+    SimpleStack<T> stack = new SimpleStack<>();
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        T revOut;
-        if (isEmpty((T) out.getLinked().getHead())) {
-            while (true) {
-                if (isEmpty((T) in.getLinked().getHead())) {
-                    revOut = out.pop();
-                    break;
-                } else {
-                    T revIn = in.pop();
-                    out.push(revIn);
-                }
+        if (stack.isEmpty(out)) {
+            while (!stack.isEmpty(in)) {
+                out.push(in.pop());
             }
-        } else {
-            revOut = out.pop();
         }
-        if (revOut == null) {
-            throw new NoSuchElementException();
-        }
-        return revOut;
+        return out.pop();
     }
 
     public void push(T value) {
         in.push(value);
-    }
-
-    public boolean isEmpty(T rev) {
-        return rev == null;
     }
 }
