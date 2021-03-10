@@ -20,34 +20,26 @@ public class ForwardLink<T> implements Iterable<T> {
     }
 
     public boolean revert() {
-        Node<T> first = head;
-        if(first == null) {
+        if (head == null || head.next == null) {
             return false;
         }
-        Node<T> second = head.next;
+
+        Node<T> first = head.next;
+        Node<T> second = first.next;
+
+        head.next = null;
+        first.next = head;
+
         if (second == null) {
-            return false;
+            head = first;
         }
-        Node<T> third = second.next;
-
-        first.next = null;
-        second.next = first;
-
-        Node<T> current = third;
-        Node<T> previous = second;
-
-        if (current == null) {
-            this.head = second;
+        while (second != null) {
+            Node<T> next = second.next;
+            second.next = first;
+            first = second;
+            head = second;
+            second = next;
         }
-        while (current != null) {
-            Node<T> next = current.next;
-            current.next = previous;
-
-            previous = current;
-            this.head = current;
-            current = next;
-        }
-
         return true;
     }
 
