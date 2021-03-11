@@ -7,9 +7,17 @@ public class SimpleArray<T> implements Iterable<T> {
     private int modCount = 0;
     private int count = 0;
 
+    public T[] getContainer() {
+        return container;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
     public T get(int index) {
         Objects.checkIndex(index, count);
-        return (T) container[index];
+        return container[index];
     }
 
     public void add(T model) {
