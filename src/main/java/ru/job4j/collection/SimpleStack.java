@@ -11,7 +11,7 @@ public class SimpleStack<T> {
         linked.addFirst(value);
     }
 
-    public boolean isEmpty(SimpleStack<T> value) {
-        return value.linked.getHead() == null;
+    public boolean isEmpty() {
+        return linked.isEmpty();
     }
 }

@@ -1,13 +1,12 @@
 package ru.job4j.collection;
 
 public class SimpleQueue<T> {
-    SimpleStack<T> stack = new SimpleStack<>();
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        if (stack.isEmpty(out)) {
-            while (!stack.isEmpty(in)) {
+        if (out.isEmpty()) {
+            while (!in.isEmpty()) {
                 out.push(in.pop());
             }
         }
