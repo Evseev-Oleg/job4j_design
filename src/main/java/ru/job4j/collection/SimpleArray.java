@@ -7,14 +7,6 @@ public class SimpleArray<T> implements Iterable<T> {
     private int modCount = 0;
     private int count = 0;
 
-    public T[] getContainer() {
-        return container;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
     public T get(int index) {
         Objects.checkIndex(index, count);
         return container[index];
@@ -31,7 +23,7 @@ public class SimpleArray<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            private int expectedModCount = modCount;
+            private final int expectedModCount = modCount;
             private int point = 0;
 
             @Override
