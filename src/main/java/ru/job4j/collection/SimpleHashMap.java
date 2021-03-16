@@ -11,18 +11,11 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
 
     public boolean insert(K key, V value) {
         if (count == table.length) {
-            size += 10;
-            tab = table;
-            table = new Node[size];
-            for (Node<K, V> kvNode : tab) {
-                int index = (size - 1) & kvNode.hash;
-                table[index] = kvNode;
-            }
-            tab = new Node[size];
+            increaseArray();
         }
         int hashNewNode = hash(key);
         int index = (size - 1) & hashNewNode;
-        if (table[index] == null && !contains(key)) {
+        if (table[index] == null) {
             table[index] = new Node<>(hashNewNode, key, value);
             count++;
             modCount++;
@@ -35,9 +28,6 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     public V get(K key) {
         int hashKey = hash(key);
         int indexKey = (size - 1) & hashKey;
-        if (table[indexKey] == null) {
-            throw new NoSuchElementException();
-        }
         return table[indexKey].value;
     }
 
@@ -48,21 +38,20 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
             table[indexKey] = null;
             count--;
             modCount--;
-        } else {
-            throw new NoSuchElementException();
-        }
-        return true;
-    }
-
-    public boolean contains(K key) {
-        for (Node<K, V> node : table) {
-            if (node != null) {
-                if (Objects.equals(node.key, key)) {
-                    return true;
-                }
-            }
+            return true;
         }
         return false;
+    }
+
+    public void increaseArray() {
+        size += 10;
+        tab = table;
+        table = new Node[size];
+        for (Node<K, V> kvNode : tab) {
+            int index = (size - 1) & kvNode.hash;
+            table[index] = kvNode;
+        }
+        tab = new Node[size];
     }
 
     public static int hash(Object key) {
