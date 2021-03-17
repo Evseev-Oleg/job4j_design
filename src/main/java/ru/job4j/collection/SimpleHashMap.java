@@ -3,14 +3,14 @@ package ru.job4j.collection;
 import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
-    private int size = 10;
+    private int size = 16;
     private Node<K, V>[] table = new Node[size];
     private Node<K, V>[] tab;
     private int modCount = 0;
     private int count = 0;
 
     public boolean insert(K key, V value) {
-        if (count == table.length) {
+        if (count == size * 0.75) {
             increaseArray();
         }
         int hashNewNode = hash(key);
@@ -26,25 +26,43 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     }
 
     public V get(K key) {
+        V res = null;
         int hashKey = hash(key);
         int indexKey = (size - 1) & hashKey;
-        return table[indexKey].value;
+        if (table[indexKey] == null) {
+            return res;
+        }
+        if (hashKey == table[indexKey].hash) {
+            res = table[indexKey].value;
+        } else if (table[indexKey].key.equals(key)) {
+            res = table[indexKey].value;
+        }
+        return res;
     }
 
     public boolean delete(K key) {
+        boolean res = false;
         int hashKey = hash(key);
         int indexKey = (size - 1) & hashKey;
+        if (table[indexKey] == null) {
+            return res;
+        }
         if (hashKey == table[indexKey].hash) {
             table[indexKey] = null;
             count--;
             modCount--;
-            return true;
+            res = true;
+        } else if (table[indexKey].key.equals(key)) {
+            table[indexKey] = null;
+            count--;
+            modCount--;
+            res = true;
         }
-        return false;
+        return res;
     }
 
     public void increaseArray() {
-        size += 10;
+        size *= 2;
         tab = table;
         table = new Node[size];
         for (Node<K, V> kvNode : tab) {
@@ -73,19 +91,23 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
 
             @Override
             public K next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
+                while (true) {
+                    if (!hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+                    if (expectedModCount != modCount) {
+                        throw new ConcurrentModificationException();
+                    }
+                    if (table[point++] != null) {
+                        return (K) table[point];
+                    }
                 }
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return (K) table[point++];
             }
         };
     }
 
     private static class Node<K, V> {
-        private int hash;
+        private final int hash;
         K key;
         V value;
 
