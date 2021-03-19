@@ -3,7 +3,7 @@ package ru.job4j.collection;
 import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
-    final double COEFF = 0.75d;
+    final double CUFF = 0.75d;
     private int size = 16;
     private Node<K, V>[] table = new Node[size];
     private Node<K, V>[] tab;
@@ -11,7 +11,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     private int count = 0;
 
     public boolean insert(K key, V value) {
-        if (count == size * COEFF) {
+        if (count == size * CUFF) {
             increaseArray();
         }
         int hashNewNode = hash(key);
