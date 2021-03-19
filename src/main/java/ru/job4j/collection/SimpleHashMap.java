@@ -3,6 +3,7 @@ package ru.job4j.collection;
 import java.util.*;
 
 public class SimpleHashMap<K, V> implements Iterable<K> {
+    final double COEFF = 0.75d;
     private int size = 16;
     private Node<K, V>[] table = new Node[size];
     private Node<K, V>[] tab;
@@ -10,7 +11,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     private int count = 0;
 
     public boolean insert(K key, V value) {
-        if (count == size * 0.75) {
+        if (count == size * COEFF) {
             increaseArray();
         }
         int hashNewNode = hash(key);
@@ -32,9 +33,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
         if (table[indexKey] == null) {
             return res;
         }
-        if (hashKey == table[indexKey].hash) {
-            res = table[indexKey].value;
-        } else if (table[indexKey].key.equals(key)) {
+        if (hashKey == table[indexKey].hash && table[indexKey].key.equals(key)) {
             res = table[indexKey].value;
         }
         return res;
@@ -47,12 +46,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
         if (table[indexKey] == null) {
             return res;
         }
-        if (hashKey == table[indexKey].hash) {
-            table[indexKey] = null;
-            count--;
-            modCount--;
-            res = true;
-        } else if (table[indexKey].key.equals(key)) {
+        if (hashKey == table[indexKey].hash && table[indexKey].key.equals(key)) {
             table[indexKey] = null;
             count--;
             modCount--;
@@ -66,6 +60,9 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
         tab = table;
         table = new Node[size];
         for (Node<K, V> kvNode : tab) {
+            if (kvNode == null) {
+                continue;
+            }
             int index = (size - 1) & kvNode.hash;
             table[index] = kvNode;
         }
@@ -91,17 +88,16 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
 
             @Override
             public K next() {
-                while (true) {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    if (expectedModCount != modCount) {
-                        throw new ConcurrentModificationException();
-                    }
-                    if (table[point++] != null) {
-                        return (K) table[point];
-                    }
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                while (table[point] == null) {
+                        point++;
+                }
+                return (K) table[point];
             }
         };
     }
