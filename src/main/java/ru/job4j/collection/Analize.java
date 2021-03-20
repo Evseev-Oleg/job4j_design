@@ -8,28 +8,25 @@ import java.util.Map;
 public class Analize {
     public Info diff(List<User> previous, List<User> current) {
         Info info = new Info();
-        Map<Integer, String> prev = new HashMap<>();
-        Map<Integer, String> curr = new HashMap<>();
-        for (User user : previous) {
-            prev.put(user.id, user.name);
-        }
+        Map<Integer, String> res = new HashMap<>();
+
         for (User user : current) {
-            curr.put(user.id, user.name);
+            res.put(user.id, user.name);
         }
-        for (Map.Entry<Integer, String> entryPrev : prev.entrySet()) {
-            if (curr.containsKey(entryPrev.getKey())) {
-                if (!entryPrev.getValue().equals(curr.get(entryPrev.getKey()))) {
-                    info.changed++;
-                }
-            } else {
+
+        for (User user : previous) {
+            String check = res.put(user.id, user.name);
+            if (check == null) {
                 info.deleted++;
+                res.remove(user.id);
+                continue;
             }
-        }
-        for (Map.Entry<Integer, String> entryCurr : curr.entrySet()) {
-            if (!prev.containsKey(entryCurr.getKey())) {
-                info.added++;
+            if (!check.equals(user.name)) {
+                info.changed++;
             }
+            res.remove(user.id);
         }
+        info.added = res.size();
         return info;
     }
 
