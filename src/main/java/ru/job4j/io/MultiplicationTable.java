@@ -10,7 +10,7 @@ public class MultiplicationTable {
                     String res = i * j + " ";
                     out.write(res.getBytes());
                 }
-                out.write("\n".getBytes());
+                out.write(System.lineSeparator().getBytes());
             }
 
         } catch (Exception e) {
