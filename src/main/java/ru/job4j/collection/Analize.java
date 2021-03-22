@@ -15,16 +15,12 @@ public class Analize {
         }
 
         for (User user : previous) {
-            String check = res.put(user.id, user.name);
+            String check = res.remove(user.id);
             if (check == null) {
                 info.deleted++;
-                res.remove(user.id);
-                continue;
-            }
-            if (!check.equals(user.name)) {
+            } else if (!check.equals(user.name)) {
                 info.changed++;
             }
-            res.remove(user.id);
         }
         info.added = res.size();
         return info;
