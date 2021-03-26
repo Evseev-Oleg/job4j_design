@@ -25,7 +25,7 @@ public class Config {
                 if (keyAndValue.length != 2) {
                     throw new IllegalArgumentException();
                 }
-                String[] value = keyAndValue[1].split("//");
+                String[] value = keyAndValue[1].split("#");
                 values.put(keyAndValue[0], value[0]);
             }
         } catch (IOException e) {
