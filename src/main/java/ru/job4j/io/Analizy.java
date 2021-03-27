@@ -29,7 +29,7 @@ public class Analizy {
     public void write(List<String> list, String target) {
         try (PrintWriter out = new PrintWriter(new FileOutputStream(target))) {
             for (int i = 0; i < list.size(); i += 2) {
-                out.println(list.get(i) + ";" + list.get(i + 1));
+                out.printf("%s;%s%n", list.get(i), list.get(i + 1));
             }
         } catch (Exception e) {
             e.printStackTrace();
