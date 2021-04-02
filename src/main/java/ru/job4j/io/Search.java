@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static java.nio.file.FileVisitResult.CONTINUE;
+
 public class Search {
     public static void main(String[] args) throws IOException {
         Path start = Paths.get(".");
@@ -22,34 +24,36 @@ public class Search {
 
 class SearchFiles implements FileVisitor<Path> {
     Predicate<Path> predicate;
-    List<Path> pathList = new ArrayList<>();
+    private List<Path> pathList = new ArrayList<>();
 
     public SearchFiles(Predicate<Path> predicate) {
         this.predicate = predicate;
     }
 
     public List<Path> getPaths() {
-
-        return null;
+        return pathList;
     }
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        return null;
+        return CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        return null;
+        if ((file.toFile().getName().endsWith(String.valueOf(predicate)))) {
+            pathList.add(file);
+        }
+        return CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-        return null;
+        return CONTINUE;
     }
 
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-        return null;
+        return CONTINUE;
     }
 }
