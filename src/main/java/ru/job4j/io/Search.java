@@ -23,7 +23,7 @@ public class Search {
 }
 
 class SearchFiles implements FileVisitor<Path> {
-    Predicate<Path> predicate;
+    private Predicate<Path> predicate;
     private List<Path> pathList = new ArrayList<>();
 
     public SearchFiles(Predicate<Path> predicate) {
@@ -35,25 +35,25 @@ class SearchFiles implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         return CONTINUE;
     }
 
     @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if ((file.toFile().getName().endsWith(String.valueOf(predicate)))) {
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        if (predicate.test(file)) {
             pathList.add(file);
         }
         return CONTINUE;
     }
 
     @Override
-    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
         return CONTINUE;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
         return CONTINUE;
     }
 }
