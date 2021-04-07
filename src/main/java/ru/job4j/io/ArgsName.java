@@ -11,16 +11,19 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        if (args.length != 0) {
-            for (String arg : args) {
-                String[] str = arg.split("=");
-                if (str.length == 2) {
-                    var key = str[0].substring(1);
-                    var value = str[1];
-                    values.put(key, value);
-                } else throw new IllegalArgumentException();
+        if (args.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String arg : args) {
+            String[] str = arg.split("=");
+            if (str.length != 2) {
+                throw new IllegalArgumentException();
+            } else {
+                var key = str[0].substring(1);
+                var value = str[1];
+                values.put(key, value);
             }
-        } else throw new IllegalArgumentException();
+        }
     }
 
     public static ArgsName of(String[] args) {
