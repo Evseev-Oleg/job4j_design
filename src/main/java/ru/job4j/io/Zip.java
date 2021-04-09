@@ -12,6 +12,10 @@ public class Zip {
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(target))) {
             for (Path source : sources) {
                 zos.putNextEntry(new ZipEntry(source.toString()));
+                try (BufferedInputStream out = new BufferedInputStream(
+                        new FileInputStream(String.valueOf(source)))) {
+                    zos.write(out.readAllBytes());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,9 +36,11 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
+        if (args.length != 3) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
+        }
         Zip zip = new Zip();
-        ArgsName jvm = ArgsName.of(new String[]{
-                "-d=C:\\projects\\job4j_design", "-e=xml", "-o=project.zip"});
+        ArgsName jvm = ArgsName.of(args);
         String path = jvm.get("d");
         String predicate = jvm.get("e");
         File target = new File(jvm.get("o"));
