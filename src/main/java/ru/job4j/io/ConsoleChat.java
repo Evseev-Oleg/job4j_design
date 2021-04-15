@@ -17,43 +17,50 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    public void run() throws IOException {
+    private List<String> readChatBot() {
         List<String> listAnswer = new ArrayList<>();
-        String str = null;
-        String change = CONTINUE;
-        BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
-        BufferedReader br = new BufferedReader(new FileReader(botAnswers));
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
-            String[] res = line.split(" ");
-            listAnswer.addAll(Arrays.asList(res));
+        try (BufferedReader br = new BufferedReader(new FileReader(botAnswers))) {
+            for (String line = br.readLine(); line != null; line = br.readLine()) {
+                String[] res = line.split(" ");
+                listAnswer.addAll(Arrays.asList(res));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        try {
+        return listAnswer;
+    }
+
+    public void run() {
+        List<String> chatBot = readChatBot();
+        List<String> chat = new ArrayList<>();
+        String str;
+        String change = CONTINUE;
+
+        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             str = bfr.readLine();
             while (!str.equals(OUT)) {
                 if (str.equals(STOP) || str.equals(CONTINUE)) {
                     change = str;
                 }
                 if (change.equals(STOP)) {
-                    bw.write(str + " ");
+                    chat.add(str);
                 } else {
-                    int index = (int) (Math.random() * listAnswer.size());
-                    bw.write(str + " ");
-                    bw.write(listAnswer.get(index) + " ");
-                    System.out.println(listAnswer.get(index));
+                    int index = (int) (Math.random() * chatBot.size());
+                    chat.add(str);
+                    chat.add(chatBot.get(index));
+                    System.out.println(chatBot.get(index));
                 }
                 str = bfr.readLine();
+            }
+            chat.add(str);
+            for (String s : chat) {
+                bw.write(s + " ");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            bw.write(str + " ");
-            bfr.close();
-            bw.close();
-            br.close();
         }
-
     }
 
     public static void main(String[] args) throws IOException {
