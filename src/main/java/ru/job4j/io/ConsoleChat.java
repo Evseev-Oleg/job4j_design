@@ -30,14 +30,23 @@ public class ConsoleChat {
         return listAnswer;
     }
 
+    private void writeChat(List<String> list) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
+            for (String s : list) {
+                bw.write(s + " ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void run() {
         List<String> chatBot = readChatBot();
         List<String> chat = new ArrayList<>();
         String str;
         String change = CONTINUE;
 
-        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
+        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in))) {
             str = bfr.readLine();
             while (!str.equals(OUT)) {
                 if (str.equals(STOP) || str.equals(CONTINUE)) {
@@ -54,10 +63,7 @@ public class ConsoleChat {
                 str = bfr.readLine();
             }
             chat.add(str);
-            for (String s : chat) {
-                bw.write(s + " ");
-            }
-
+            writeChat(chat);
         } catch (IOException e) {
             e.printStackTrace();
         }
