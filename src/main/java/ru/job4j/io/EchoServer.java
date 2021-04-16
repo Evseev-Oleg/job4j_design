@@ -18,12 +18,14 @@ public class EchoServer {
                         massStr = massStr[1].split("=");
                         if (massStr.length > 1) {
                             if (massStr[1].equals("Bye")) {
+                                out.write("HTTP/1.1 200 OK\r\n".getBytes());
                                 return;
                             }
                         }
                         System.out.println(str);
                     }
-                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
+//                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
+//                    out.write("Hello, dear friend.".getBytes());
                 }
             }
         }
