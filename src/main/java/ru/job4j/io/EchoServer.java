@@ -17,14 +17,20 @@ public class EchoServer {
                         String[] massStr = str.split(" ");
                         massStr = massStr[1].split("=");
                         if (massStr.length > 1) {
-                            if (massStr[1].equals("Bye")) {
+                            if (massStr[1].equals("Exit")) {
                                 out.write("HTTP/1.1 200 OK\r\n".getBytes());
                                 return;
+                            } else if (massStr[1].equals("Hello")) {
+                                out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                                out.write("Hello".getBytes());
+                            } else {
+                                out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                                out.write("What".getBytes());
                             }
                         }
                         System.out.println(str);
                     }
-                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                 }
             }
         }
