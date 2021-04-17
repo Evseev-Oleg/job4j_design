@@ -24,8 +24,7 @@ public class EchoServer {
                         }
                         System.out.println(str);
                     }
-//                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
-//                    out.write("Hello, dear friend.".getBytes());
+                    out.write("HTTP/1.1 200 OK\r\n".getBytes());
                 }
             }
         }
