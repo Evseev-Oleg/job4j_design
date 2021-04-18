@@ -12,25 +12,25 @@ public class EchoServer {
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
-                    String str;
-                    while (!(str = in.readLine()).isEmpty()) {
+                    String str = in.readLine();
+                    String http = "HTTP/1.1 200 OK\r\n\r\n";
+                    if (!str.isEmpty()) {
                         String[] massStr = str.split(" ");
                         massStr = massStr[1].split("=");
                         if (massStr.length > 1) {
                             if (massStr[1].equals("Exit")) {
-                                out.write("HTTP/1.1 200 OK\r\n".getBytes());
+                                out.write(http.getBytes());
                                 return;
                             } else if (massStr[1].equals("Hello")) {
-                                out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                                out.write(http.getBytes());
                                 out.write("Hello".getBytes());
                             } else {
-                                out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                                out.write(http.getBytes());
                                 out.write("What".getBytes());
                             }
                         }
                         System.out.println(str);
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                 }
             }
         }
