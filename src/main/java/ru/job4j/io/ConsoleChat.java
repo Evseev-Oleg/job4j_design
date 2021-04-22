@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConsoleChat {
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
     private final String path;
     private final String botAnswers;
     private static final String OUT = "закончить";
@@ -69,8 +73,13 @@ public class ConsoleChat {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ConsoleChat cc = new ConsoleChat("result.txt", "even.txt");
-        cc.run();
+    public static void main(String[] args) {
+        try {
+            ConsoleChat cc = new ConsoleChat("result.txt", "even.txt");
+            cc.run();
+        } catch (Exception e) {
+            LOG.error("Exception in log example", e);
+        }
+
     }
 }
