@@ -1,0 +1,8 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<book availability="false" count="30" title="Spring">
+    <contact zipCode="+7(924)" phone="111-111-11-11"/>
+    <statuses>
+        <status>Busy</status>
+        <status>Free</status>
+    </statuses>
+</book>
