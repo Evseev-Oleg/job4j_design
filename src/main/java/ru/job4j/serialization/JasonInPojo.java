@@ -9,6 +9,16 @@ import java.util.List;
 public class JasonInPojo {
     public static void main(String[] args) {
         JSONObject jsonContact = new JSONObject(3412, "11-111");
+        JSONObject jsonBook = new JSONObject("{"
+                + "\"availability\":false,"
+                + "\"count\":350,"
+                + "\"contact\":"
+                + "{"
+                + "\"phone\":\"+7(924)111-111-11-11\""
+                + "},"
+                + "\"statuses\":"
+                + "[\"Busy\",\"Free\"]"
+                + "}");
 
         List<String> list = new ArrayList<>();
         list.add("Busy");
@@ -25,7 +35,7 @@ public class JasonInPojo {
         jsonObject.put("statuses", jsonStatuses);
 
         System.out.println(jsonObject.toString());
-
+        System.out.println(jsonBook.toString());
         System.out.println(new JSONObject(book).toString());
     }
 }
