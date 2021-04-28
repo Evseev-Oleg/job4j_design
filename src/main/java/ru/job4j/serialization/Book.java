@@ -32,6 +32,18 @@ public class Book {
         this.statuses = statuses;
     }
 
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     @Override
     public String toString() {
         return "Book{"
