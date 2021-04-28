@@ -1,16 +1,28 @@
 package ru.job4j.serialization;
 
+import javax.xml.bind.annotation.*;
+import java.util.Arrays;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Arrays;
-
+@XmlRootElement(name = "book")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Book {
-    private final boolean availability;
-    private final int count;
-    private final String title;
-    private final Contact contact;
-    private final String[] statuses;
+    @XmlAttribute
+    private boolean availability;
+    @XmlAttribute
+    private int count;
+    @XmlAttribute
+    private String title;
+
+    private Contact contact;
+    @XmlElementWrapper
+    @XmlElement(name = "status")
+    private String[] statuses;
+
+    public Book() {
+    }
 
     public Book(boolean availability, int count, String title, Contact contact, String... statuses) {
         this.availability = availability;
@@ -22,8 +34,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "availability=" + availability
+        return "Book{"
+                + "availability=" + availability
                 + ", count=" + count
                 + ", title='" + title + '\''
                 + ", contact=" + contact
@@ -32,8 +44,8 @@ public class Book {
     }
 
     public static void main(String[] args) {
-        final Book book = new Book(false, 30, "Title"
-                , new Contact(123, "11-111"), "Worker");
+        final Book book = new Book(false, 30, "Title",
+                new Contact(123, "11-111"), "Worker");
 
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(book));
