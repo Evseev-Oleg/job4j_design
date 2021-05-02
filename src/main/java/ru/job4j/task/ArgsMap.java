@@ -1,0 +1,32 @@
+package ru.job4j.task;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ArgsMap {
+    private final Map<String, String> values = new HashMap<>();
+
+    public String get(String key) {
+        return values.get(key);
+    }
+
+    private void parse(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        for (String arg : args) {
+            String[] str = arg.split("=");
+            if (str.length == 2) {
+                var key = str[0].substring(1);
+                var value = str[1];
+                values.put(key, value);
+            }
+        }
+    }
+
+    public static ArgsMap of(String[] args) {
+        ArgsMap names = new ArgsMap();
+        names.parse(args);
+        return names;
+    }
+}
