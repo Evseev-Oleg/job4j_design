@@ -4,7 +4,7 @@ create table camp (
     number int
 );
 
-create table childrens (
+create table childrens(
     id serial primary key,
 	lastname varchar(55),
     firstname varchar(55),
