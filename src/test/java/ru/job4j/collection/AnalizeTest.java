@@ -36,6 +36,7 @@ public class AnalizeTest {
         assertThat(res, is(2));
     }
 
+
     @Test
     public void whenDelete() {
         Analize analize = new Analize();
